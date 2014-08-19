@@ -1,10 +1,94 @@
-
 //! Back-end agnostic keyboard keys.
 
 use std::hash::Hash;
 use std::hash::sip::SipState;
 use std::num::FromPrimitive;
 use std::num::ToPrimitive;
+use {Device, DeviceID, ElementID, Event, Timestamp};
+
+/// 
+pub trait KeyboardDevice: Device {
+    /// Returns the key corresponding to the element.
+    ///
+    /// Returns `None` if the element doesn't match any `Key` in the enum.
+    fn get_mapping(&self, id: &ElementID) -> Option<Key>;
+}
+
+/// An event triggered by a keyboard device.
+#[deriving(Clone, Show)]
+pub enum KeyboardEvent {
+    /// Pressed a keyboard key.
+    KeyPress {
+        /// When the event happened.
+        pub timestamp: Timestamp,
+
+        /// Which device triggered this event.
+        pub device: DeviceID,
+
+        /// Which element triggered this event.
+        pub element: ElementID,
+
+        /// The key that was pressed, or none if unknown.
+        pub key: Option<Key>,
+    },
+
+    /// Released a keyboard key.
+    KeyRelease {
+        /// When the event happened.
+        pub timestamp: Timestamp,
+
+        /// Which device triggered this event.
+        pub device: DeviceID,
+
+        /// Which element triggered this event.
+        pub element: ElementID,
+
+        /// The key that was released, or none if unknown.
+        pub key: Option<Key>,
+    }
+}
+
+impl Event for KeyboardEvent {
+    fn get_timestamp(&self) -> &Timestamp {
+        match self {
+            &KeyPress{ref timestamp, ..} => timestamp,
+            &KeyRelease{ref timestamp, ..} => timestamp
+        }
+    }
+
+    fn get_device_id(&self) -> &DeviceID {
+        match self {
+            &KeyPress{ref device, ..} => device,
+            &KeyRelease{ref device, ..} => device
+        }
+    }
+
+    fn get_element_id(&self) -> &ElementID {
+        match self {
+            &KeyPress{ref element, ..} => element,
+            &KeyRelease{ref element, ..} => element
+        }
+    }
+
+    fn get_element_value(&self) -> f32 {
+        match self {
+            &KeyPress{..} => 1.0,
+            &KeyRelease{..} => 0.0
+        }
+    }
+}
+
+/// Trait for events that can be turned into `KeyboardEvent`s
+pub trait ToKeyboardEvent: Event {
+    /// Turns the event into a keyboard event.
+    fn to_keyboard_event(&self) -> Option<KeyboardEvent>;
+}
+
+impl ToKeyboardEvent for KeyboardEvent {
+    fn to_keyboard_event(&self) -> Option<KeyboardEvent> {
+        Some(self.clone())
+    }
+}
 
 /// Represent a keyboard key.
 #[allow(missing_doc)]
