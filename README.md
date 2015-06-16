@@ -1,5 +1,7 @@
 # input [![Build Status](https://travis-ci.org/PistonDevelopers/input.svg?branch=master)](https://travis-ci.org/PistonDevelopers/input)
 
+*Notice! This library is deprecated and moved to https://github.com/PistonDevelopers/piston*
+
 A structure for user input.
 
 For generic event programming, use [event](https://github.com/pistondevelopers/event).
