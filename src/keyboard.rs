@@ -13,34 +13,49 @@ bitflags!(
     #[allow(missing_docs)]
     #[derive(RustcDecodable, RustcEncodable, Debug)]
     flags ModifierKey: u8 {
+        /// No Modifiers
         const NO_MODIFIER           = 0b00000000,
+        /// CTRL
         const CTRL                  = 0b00000001,
+        /// SHIFT
         const SHIFT                 = 0b00000010,
+        /// ALT
         const ALT                   = 0b00000100,
+        /// GUI
         const GUI                   = 0b00001000,
+        /// CTRL_SHIFT
         const CTRL_SHIFT            = CTRL.bits
                                     | SHIFT.bits,
+        /// CTRL_ALT
         const CTRL_ALT              = CTRL.bits
                                     | ALT.bits,
+        /// CTRL_GUI
         const CTRL_GUI              = CTRL.bits
                                     | GUI.bits,
+        /// CTRL_SHIFT_ALT
         const CTRL_SHIFT_ALT        = CTRL.bits
                                     | SHIFT.bits
                                     | ALT.bits,
+        /// CTRL_SHIFT_GUI
         const CTRL_SHIFT_GUI        = CTRL.bits
                                     | SHIFT.bits
                                     | GUI.bits,
+        /// CTRL_SHIFT_ALT_GUI
         const CTRL_SHIFT_ALT_GUI    = CTRL.bits
                                     | SHIFT.bits
                                     | ALT.bits
                                     | GUI.bits,
+        /// SHIFT_ALT
         const SHIFT_ALT             = SHIFT.bits
                                     | ALT.bits,
+        /// SHIFT_GUI
         const SHIFT_GUI             = SHIFT.bits
                                     | GUI.bits,
+        /// SHIFT_ALT_GUI
         const SHIFT_ALT_GUI         = SHIFT.bits
                                     | ALT.bits
                                     | GUI.bits,
+        /// ALT_GUI
         const ALT_GUI               = ALT.bits
                                     | GUI.bits
     }
